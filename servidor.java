@@ -11,7 +11,7 @@ public class servidor {
         new servidor().start();
     }
 
-    // Global queue of incoming messages (preserves arrival order)
+    // Fila global de mensagens recebidas (preserva a ordem de chegada)
     private final BlockingQueue<Message> globalQueue = new LinkedBlockingQueue<>();
 
     private void start() throws IOException {
@@ -30,11 +30,11 @@ public class servidor {
             System.out.println("Jogador " + p.id + " conectado: " + p.getRemote());
         }
 
-        // Game loop: rounds until someone quits
+        // Loop do jogo: rodadas até alguém desistir
         boolean running = true;
         int round = 1;
         while (running) {
-            // All players must confirmar início da partida
+            // Todos os jogadores devem confirmar início da partida
             broadcast(players, "PEDIR_CONFIRMACAO");
             boolean allConfirmed = waitForAllConfirm(players);
             if (!allConfirmed) {
@@ -45,23 +45,23 @@ public class servidor {
 
             broadcast(players, "MENSAGEM Iniciando partida (rodada " + round + ")");
 
-            // Single round: collect one jogada per player
+            // Rodada Unica: Uma jogada por jogador
             Map<Integer, String> moves = new ConcurrentHashMap<>();
 
             broadcast(players, "MENSAGEM Envie sua jogada (JOGADA <R|P|S>). Você pode enviar mesmo fora da sua vez.");
-            // Notify players of turn order but accept messages in arrival order
+            // Notifique os jogadores sobre a ordem dos turnos, mas aceite mensagens na ordem de chegada
             for (Player p : players) {
                 p.sendMessage("SUA_VEZ");
                 for (Player other : players) if (other != p) other.sendMessage("ESPERE Jogador " + p.id + " está jogando");
 
-                // Process incoming messages until every player has a move
+                // Processa as mensagens recebidas até que cada jogador tenha um movimento
                 while (moves.size() < players.size()) {
                     Message m;
                     try { m = globalQueue.take(); } catch (InterruptedException ie) { continue; }
                     if (m == null) continue;
                     String txt = m.text.trim();
                     if (txt.equalsIgnoreCase("SAIR") || txt.equalsIgnoreCase("NAO")) {
-                        // a player wants to exit
+                        // um jogador quer sair
                         Player quitting = findPlayerById(players, m.playerId);
                         if (quitting != null) {
                             broadcast(players, "MENSAGEM Jogador " + quitting.id + " saiu. Encerrando partida.");
@@ -69,7 +69,7 @@ public class servidor {
                         }
                     }
 
-                    // Accept JOGADA <sym> or CHOICE <sym>
+                    // Aceitar JOGADA <sym> ou CHOICE <sym>
                     String sym = null; String upper = txt.toUpperCase();
                     if (upper.startsWith("JOGADA ")) sym = txt.substring(7).trim();
                     else if (upper.startsWith("CHOICE ")) sym = txt.substring(7).trim();
@@ -82,11 +82,11 @@ public class servidor {
                         else if (sym.equals("SCISSORS") || sym.equals("S") || sym.equals("TESOURA") || sym.equals("T")) sym = "S";
                         else { Player sender = findPlayerById(players, m.playerId); if (sender != null) sender.sendMessage("MENSAGEM Jogada inválida: use R, P ou S"); continue; }
 
-                        // Only record first move per player in this round
+                        // Registra apenas o primeiro movimento por jogador nesta rodada
                         if (!moves.containsKey(m.playerId)) {
                             moves.put(m.playerId, sym);
                             broadcast(players, "MENSAGEM Jogador " + m.playerId + " jogou: " + sym);
-                            // Send estado parcial
+                            // Enviar estado parcial
                             sendEstado(players, moves);
                         } else {
                             Player sender = findPlayerById(players, m.playerId); if (sender != null) sender.sendMessage("MENSAGEM Você já jogou nesta rodada.");
@@ -101,10 +101,10 @@ public class servidor {
 
             if (!running) break;
 
-            // If not all players moved (e.g., due to quitting), stop
+            // Se nem todos os jogadores se moveram (por exemplo, devido à desistência), parar.
             if (moves.size() < players.size()) { broadcast(players, "MENSAGEM Partida cancelada (jogador saiu). Encerrando."); break; }
 
-            // Evaluate moves
+            // Avalia os movimentos
             Set<Integer> winners = evaluateWinners(moves);
 
             String choicesList = "";
@@ -125,7 +125,7 @@ public class servidor {
             round++;
         }
 
-        // Close all
+        // Encerrar tudo.
         for (Player p : players) { try { p.sendMessage("FIM"); p.close(); } catch (IOException e) {} }
         serverSocket.close(); System.out.println("Servidor encerrado.");
     }
