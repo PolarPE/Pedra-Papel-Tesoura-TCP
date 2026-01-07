@@ -1,9 +1,11 @@
 Jogo Pedra, Papel e Tesoura (3 jogadores) - Java Sockets
 
 Integrantes:
-- NOME 1
-- NOME 2
-- NOME 3
+- Italo Cardoso da Silva
+- Luan Rodrigues de Miranda
+- Miguel Florentino de lima
+- Laura Barbosa Clemente
+- Keylla Larrisa Porfirio
 
 Descrição do jogo:
 - Jogo de Pedra, Papel e Tesoura para 3 jogadores usando sockets TCP.
