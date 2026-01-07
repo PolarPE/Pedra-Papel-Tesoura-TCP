@@ -8,7 +8,7 @@ public class Client1 {
 	public static void main(String[] args) {
 		String host = args.length > 0 ? args[0] : DEFAULT_HOST;
 		int port = args.length > 1 ? Integer.parseInt(args[1]) : DEFAULT_PORT;
-		// Pergunta interativa antes de conectar quando houver um console interativo.
+		// Pergunta do servidor ao iniciar
 		if (System.console() != null) {
 			System.out.print("Conectar ao servidor " + host + ":" + port + "? (S/N): ");
 			try {
@@ -25,7 +25,7 @@ public class Client1 {
 				System.err.println("Erro lendo entrada: " + e.getMessage());
 			}
 		} else {
-			// Sem console interativo (entrada redirecionada) — mantém comportamento automático para scripts
+			// entrada redirecionada — mantém comportamento automático para scripts
 			runClient(host, port);
 		}
 	}
@@ -53,7 +53,7 @@ public class Client1 {
 						out.println(toSend);
 					}
 				} catch (IOException e) {
-					// stdin closed
+					// stdin encerrado
 				}
 			});
 			inputThread.setDaemon(true);
