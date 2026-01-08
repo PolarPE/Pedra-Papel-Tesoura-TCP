@@ -82,21 +82,6 @@ Como jogar (fluxo):
 - Após a rodada, o servidor pergunta se desejam jogar novamente (`PERGUNTA_REMATCH`). Se todos aceitarem, inicia nova rodada usando as mesmas conexões.
 - Se algum jogador escolher não jogar novamente, a conexão será encerrada e o servidor finaliza.
 
-Protocolo (mensagens principais):
-- Servidor -> Cliente:
-  - `ASSIGN <id>`: atribui id do jogador
-  - `MENSAGEM <texto>`: mensagem informativa
-  - `PEDIR_CONFIRMACAO`: pedir confirmação para iniciar a partida
-  - `SUA_VEZ`: notifica que é a sua vez (mas ainda aceita jogadas fora de vez)
-  - `ESTADO P1:<X> P2:<Y> P3:<Z>`: estado atual das jogadas
-  - `VENCEU` / `PERDEU` / `EMPATE`: resultado da rodada
-  - `PERGUNTA_REMATCH`: pergunta se deseja jogar novamente
-  - `FIM`: encerra a conexão
-- Cliente -> Servidor:
-  - `CONFIRMA` / `SAIR`: confirmar ou sair antes do início
-  - `JOGADA <R|P|S>`: enviar jogada (R=Rock(Pedra), P=Paper(Papel), S=Scissors(Tesoura))
-  - `REMATCH SIM` / `REMATCH NAO`: resposta ao rematch
-
 Observações:
 - O servidor utiliza uma fila global para processar as mensagens na ordem de chegada, permitindo lidar com jogadas enviadas simultaneamente.
 - A ordem de jogadas é mostrada no console a cada jogada e o servidor envia o estado parcial (`ESTADO`) sempre que uma nova jogada é aceita.
