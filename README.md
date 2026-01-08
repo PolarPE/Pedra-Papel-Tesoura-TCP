@@ -30,7 +30,7 @@ java Client3
 ```
 
 Comportamento interativo dos clientes:
-- Ao executar um cliente em **terminal interativo** (sem redirecionamento de stdin), o cliente perguntará:
+- Ao executar um cliente no **terminal**, o cliente perguntará:
 
   Conectar ao servidor <host>:<port>? (S/N):
 
@@ -70,10 +70,6 @@ java Client3 < c3.txt &> c3.log &
 ```
 - Verifique os logs com `tail -f c1.log` (ou `tail -n +1 c1.log`).
 
-Dicas de depuração:
-- Se `java servidor` falhar com "Address already in use", finalize o processo antigo com `pkill -f servidor` ou mate o PID.
-- Se um cliente encerrar, verifique se recebeu `FIM` do servidor ou se o arquivo de testes terminou (stdin).
-Como jogar (fluxo):
 - Após os 3 jogadores se conectarem, o servidor pede que cada jogador confirme o início (`PEDIR_CONFIRMACAO`).
 - Quando todos confirmarem, a partida inicia.
 - Em cada rodada, o servidor aceita jogadas (`JOGADA R|P|S`) e controla a ordem das jogadas (cada jogador será notificado com `SUA_VEZ`, mas pode enviar a jogada a qualquer momento).
