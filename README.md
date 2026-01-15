@@ -35,40 +35,6 @@ Comportamento interativo dos clientes:
   Conectar ao servidor <host>:<port>? (S/N):
 
   Responda `S` ou `SIM` para conectar ou `N`/`NAO` para cancelar.
-- Quando a execução for **não interativa** (por exemplo: `java Client1 < c1.txt`), o cliente **conecta automaticamente** — isso mantém compatibilidade com testes scriptados.
-
-Testes automatizados (scriptados):
-- Crie três arquivos de entrada (ex.: `c1.txt`, `c2.txt`, `c3.txt`) com sequências de comandos. Exemplo:
-
-`c1.txt`:
-```
-CONFIRMA
-JOGADA R
-REMATCH SIM
-```
-
-`c2.txt`:
-```
-CONFIRMA
-JOGADA P
-REMATCH SIM
-```
-
-`c3.txt`:
-```
-CONFIRMA
-JOGADA S
-REMATCH SIM
-```
-
-- Execute o servidor e os clientes (em background), salvando logs:
-```bash
-java servidor
-java Client1 < c1.txt &> c1.log &
-java Client2 < c2.txt &> c2.log &
-java Client3 < c3.txt &> c3.log &
-```
-- Verifique os logs com `tail -f c1.log` (ou `tail -n +1 c1.log`).
 
 - Após os 3 jogadores se conectarem, o servidor pede que cada jogador confirme o início (`PEDIR_CONFIRMACAO`).
 - Quando todos confirmarem, a partida inicia.
