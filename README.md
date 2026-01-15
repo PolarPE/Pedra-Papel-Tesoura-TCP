@@ -4,8 +4,8 @@ Integrantes:
 - Italo Cardoso da Silva
 - Luan Rodrigues de Miranda
 - Miguel Florentino de lima
-- Laura Barbosa Clemente
-- Keylla Larrisa Porfirio
+- Laura Barbosa Clémente
+- Keylla Larrisa de Miranda Porfirio
 
 Descrição do jogo:
 - Jogo de Pedra, Papel e Tesoura para 3 jogadores usando sockets TCP.
